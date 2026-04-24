@@ -163,7 +163,7 @@ import * as jose from "jose";
 
 const SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   // 🧩 Disable middleware locally (development mode)
   if (process.env.NODE_ENV !== "production") {
     console.log("⚙️ Middleware disabled in development mode");
@@ -196,11 +196,11 @@ export async function middleware(req: NextRequest) {
 
         if (role === "ISPSU_Head") {
           return NextResponse.redirect(
-            new URL("/administrator/head/home", req.url)
+            new URL("/administrator/head/home", req.url),
           );
         } else if (role === "ISPSU_Staff") {
           return NextResponse.redirect(
-            new URL("/administrator/staff/home", req.url)
+            new URL("/administrator/staff/home", req.url),
           );
         }
       } catch (error) {
