@@ -233,7 +233,7 @@ export default function useDownloadDocument(applicationId: number | undefined) {
         {
           withCredentials: true,
           responseType: "blob", // ⬅️ important for file downloading
-        }
+        },
       );
 
       // Detect file type and name
