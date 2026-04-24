@@ -21,19 +21,23 @@ export default function useDownloadForm(scholarshipId: number | undefined) {
         {
           withCredentials: true,
           responseType: "blob", // ⬅️ important for file downloading
-        }
+        },
       );
 
       // Detect file type and name
       const contentDisposition = response.headers["content-disposition"];
       const contentType = response.headers["content-type"];
-      const fileExtension = contentType?.split("/")[1] || "bin";
+      const fileExtension =
+        (typeof contentType === "string" ? contentType : "").split("/")[1] ||
+        "bin";
       const fileName =
         contentDisposition?.split("filename=")[1]?.replace(/"/g, "") ||
         `document.${fileExtension}`;
 
       // Create a download link for the file
-      const blob = new Blob([response.data], { type: contentType });
+      const blob = new Blob([response.data], {
+        type: typeof contentType === "string" ? contentType : undefined,
+      });
       const urlBlob = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = urlBlob;
